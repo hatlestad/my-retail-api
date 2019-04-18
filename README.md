@@ -8,11 +8,15 @@
    * vim paths
    * add `/usr/local/bin` to the file
 
-3. Run `npm install` to install dependencies
+3. Add the `.env` file (see repo owner)
 
-4. Run `npm start` to start the node server
+4. Add the `firebase-key.json` file (see repo owner)
 
-5. Access the endpoint locally at this address: http://localhost:3232/products/:id
+5. Run `npm install` to install dependencies
+
+6. Run `npm start` to start the node server
+
+7. Access the endpoint locally at this address: http://localhost:3232/products/:id
 
 ### Tests ###
 
