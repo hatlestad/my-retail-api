@@ -5,8 +5,15 @@ import '@babel/polyfill';
 
 export default async function putProduct(req, res) {
   const id = req.params.id;
+  const validBodyProperties = ['id', 'name', 'current_price', 'current_price.value', 'current_price.currency_code'];
 
-  // Validate id is a number
+  // Validate body
+  const missingProps = common.isValidBody(req.body, validBodyProperties);
+  if (missingProps.length > 0) {
+    return res.status(400).json({ error: `Missing the following prop(s) from the body: ${missingProps}` });
+  }
+
+  // Validate id is a valid TCIN
   if (!common.isValidProductId(id)) {  
     return res.status(400).json({ error: 'Invalid product id provided in the path.' });
   }

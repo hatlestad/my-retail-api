@@ -17,6 +17,64 @@ describe('Products PUT', () => {
     updateDocOnCollectionStub.restore();
   });
 
+  describe('invalid body', () => {
+    const productId = 42424242;
+
+    it('returns 400 along with error when body is not provided', (done) => {
+      const request = httpMocks.createRequest({
+        method: 'PUT',
+        url: `/products/${productId}`,
+        params: {
+          id: productId
+        }
+      });
+      const response = httpMocks.createResponse();
+  
+      putProduct(request, response)
+        .then(result => {
+          const actualResponse = response._getData();
+          const expectedResponse = JSON.stringify({ 
+            error: 'Missing the following prop(s) from the body: id, name, current_price, current_price.value, current_price.currency_code'
+          });
+  
+          expect(actualResponse).to.equal(expectedResponse);
+          expect(response.statusCode).to.equal(400);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('returns 400 along with error when body is missing some of the properties', (done) => {
+      const request = httpMocks.createRequest({
+        method: 'PUT',
+        url: `/products/${productId}`,
+        body: {
+          id: productId,
+          current_price: {
+            value: 10.00,
+          }
+        },
+        params: {
+          id: productId
+        }
+      });
+      const response = httpMocks.createResponse();
+  
+      putProduct(request, response)
+        .then(result => {
+          const actualResponse = response._getData();
+          const expectedResponse = JSON.stringify({ 
+            error: 'Missing the following prop(s) from the body: name, current_price.currency_code'
+          });
+  
+          expect(actualResponse).to.equal(expectedResponse);
+          expect(response.statusCode).to.equal(400);
+          done();
+        })
+        .catch(done);
+    });
+  });
+
   describe('invalid id numbers', () => {
     it('returns 400 along with error when product id is not valid', (done) => {
       const productId = 1234;
@@ -27,8 +85,10 @@ describe('Products PUT', () => {
         body: {
           id: productId,
           current_price: {
-            value: 10.00
-          }
+            value: 10.00,
+            currency_code: 'USD'
+          },
+          name: 'Random Product'
         },
         params: {
           id: productId
@@ -57,8 +117,10 @@ describe('Products PUT', () => {
       body: {
         id: productId,
         current_price: {
-          value: 10.00
-        }
+          value: 10.00,
+          currency_code: 'USD'
+        },
+        name: 'Random Product'
       },
       params: {
         id: productId
