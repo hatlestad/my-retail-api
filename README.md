@@ -13,3 +13,9 @@
 4. Run `npm start` to start the node server
 
 5. Access the endpoint locally at this address: http://localhost:3232/products/:id
+
+### Tests ###
+
+Currently this project only includes unit tests. Integration tests were left out but could be easily integrated.
+
+1. Run `npm test` to kick off unit tests
