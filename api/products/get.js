@@ -12,7 +12,7 @@ export default async function getProduct(req, res) {
   const id = req.params.id;
   let data = {};
 
-  // Validate id is a number
+  // Validate id is a valid TCIN
   if (!common.isValidProductId(id)) {  
     return res.status(400).json({ error: 'Invalid product id provided in the path.' });
   }
