@@ -41,4 +41,33 @@ describe('Library common', () => {
     });
   });
 
+  describe('isValidBody', () => {
+    const body = { id: 1234, name: 'John' };
+
+    it('returns an empty string when body is empty', () => {
+      const result = common.isValidBody({});
+      expect(result).to.equal('');
+    });
+
+    it('returns an empty string when validProperties is empty', () => {
+      const result = common.isValidBody({}, []);
+      expect(result).to.equal('');
+    })
+
+    it('returns missing value in string when body is missing one value', () => {
+      const result = common.isValidBody(body, ['id', 'name', 'rando']);
+      expect(result).to.equal('rando');
+    });
+
+    it('returns missing values in string when body is missing more than one value', () => {
+      const result = common.isValidBody(body, ['id', 'name', 'rando', 'other']);
+      expect(result).to.equal('rando, other');
+    });
+
+    it('returns missing value in string even when body contains additional properties than what are required', () => {
+      const result = common.isValidBody({ ...body, additional: 'prop' }, ['id', 'name', 'rando']);
+      expect(result).to.equal('rando');
+    });
+  });
+
 });
